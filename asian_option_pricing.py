@@ -1,8 +1,9 @@
 import yfinance as yf
-import pandas as pd
 import numpy as np
-from matplotlib import pyplot as plt
+# import pandas as pd
+# from matplotlib import pyplot as plt
 from datetime import date, datetime
+
 
 def main():
     seed = 42
@@ -22,7 +23,7 @@ def main():
     sigma = calculate_vol(tk, T, option_type, S0)
 
     S_avg = stock_path(S0, sigma, T, n, r, q, seed=seed)
-    price, se = price_asian(r, T, option_type, S_avg, K)
+    price, se = price_asian(r, T, option_type, S_avg, K, n)
 
     z_95 = 1.959
     ci95 = (price - z_95*se, price + z_95*se)
@@ -157,7 +158,7 @@ def stock_path(S0, sigma, T, n, r, q, seed=None):
     return S_avg
 
 
-def price_asian(r, T, option_type, S_avg, K) -> float:
+def price_asian(r, T, option_type, S_avg, K, n) -> float:
     if option_type == "call":
         payoffs = np.maximum(S_avg - K, 0.0)
     elif option_type =="put":
